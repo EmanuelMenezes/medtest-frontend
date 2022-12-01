@@ -1,0 +1,64 @@
+<div class="area">
+
+
+  <div class="page">
+
+    <div class="card">
+      <div class="logo">
+        <span>.MEDTEST.</span>
+      </div>
+      <div class="login-form">
+        <form>
+          <div class="form-group">
+            <input type="text" class="form-control input" placeholder="Email" />
+          </div>
+          <div class="form-group">
+            <input [type]="showPassword ? 'text': 'password'" class="form-control input" placeholder="Senha" />
+            <span class="pass-visibility-toggle" (click)="showPassword = !showPassword">
+              <span class="material-icons" *ngIf="!showPassword">
+                visibility
+              </span>
+              <span class="material-icons" *ngIf="showPassword">
+                visibility_off
+              </span>
+            </span>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block button">Entrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="dots"></div>
+  <ul class="circles">
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+    <li (click)="teste($event)"></li>
+  </ul>
+
+
+</div>

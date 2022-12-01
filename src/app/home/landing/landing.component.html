@@ -1,1 +1,30 @@
-<p>landing works!</p>
+<div class="area">
+  <div class="page">
+    <div class="header">
+      <div class="logo">
+        <span>.MEDTEST.</span>
+      </div>
+      <div class="menu">
+        <ul>
+          <li> <a routerLink="game"> <span class="material-icons-round">
+                play_circle
+              </span> </a> </li>
+          <li><a routerLink="dashboard"><span class="material-icons-round">
+                assessment
+              </span></a></li>
+          <li><a routerLink="records"><span class="material-icons-round">
+                add_circle
+              </span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="page-body">
+      <router-outlet></router-outlet>
+
+    </div>
+
+
+  </div>
+  <div class="dots"></div>
+
+</div>
