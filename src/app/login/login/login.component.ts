@@ -1,4 +1,7 @@
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from './../shared/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +11,18 @@ import { Component, OnInit } from '@angular/core';
 export class LoginComponent implements OnInit {
   showPassword = false;
 
-  constructor() {}
+  loginForm: FormGroup;
+
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {
+    this.loginForm = this.fb.group({
+      email: [''],
+      password: [''],
+    });
+  }
 
   ngOnInit(): void {}
 
@@ -27,5 +41,14 @@ export class LoginComponent implements OnInit {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+  }
+
+  login() {
+    this.authService.login(this.loginForm.value).subscribe((res: any) => {
+      if (res.token) {
+        localStorage.setItem('token', res.token);
+        this.router.navigate(['/home/dashboard']);
+      }
+    });
   }
 }

@@ -1,3 +1,4 @@
+import { NgApexchartsModule } from 'ng-apexcharts';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -35,6 +36,7 @@ import { RecordsComponent } from './records/records.component';
         ],
       },
     ]),
+    NgApexchartsModule,
   ],
 })
 export class HomeModule {}

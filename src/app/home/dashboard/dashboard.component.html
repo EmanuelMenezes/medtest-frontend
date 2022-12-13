@@ -1,1 +1,19 @@
-<p>dashboard works!</p>
+<div class="page-wrapper">
+  <div class="page-body">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="glass-card">
+          <h3 class="chart-title">Acertos por Turma</h3>
+          <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [labels]="chartOptions.labels" [responsive]="chartOptions.responsive!" [theme]="chartOptions.theme!"></apx-chart>
+        </div>
+
+      </div>
+      <div class="col-md-5">
+        <div class="glass-card">
+          <h3 class="chart-title">Acertos por questão</h3>
+          <apx-chart [series]="chartOptions2.series" [chart]="chartOptions2.chart" [dataLabels]="chartOptions2.dataLabels" [grid]="chartOptions2.grid" [theme]="chartOptions2.theme!" [xaxis]="chartOptions2.xaxis" [plotOptions]="chartOptions2.plotOptions"></apx-chart>
+        </div>
+
+      </div>
+    </div>
+  </div>
