@@ -1,7 +1,7 @@
 import { CasoClinico, Questao } from './estrutura';
 import { Component, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
 @Component({
   selector: 'app-records',
   templateUrl: './records.component.html',
