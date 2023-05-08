@@ -1,7 +1,6 @@
 <div class="my-bg">
   <div class="wrapper board">
-    <div class="bg-dots" id="board">
-
+    <div class="bg-dots" id="board" [class.deleting]="deleting">
       <svg>
       </svg>
       <div class="toolbar" cdkDrag #toolbar cdkDragBoundary=".bg-dots">
@@ -14,30 +13,42 @@
         <div class="toolbar-item" (click)="insertFluxo('questao')">
           <img src="assets/icones_medtest/5.svg" alt="" srcset="" style="margin-top: -3px;">
         </div>
+        <div class="toolbar-item" (click)="deleteToggle()" [class.active]="deleting">
+          <span class="material-icons-round" *ngIf="!deleting">
+            delete
+          </span>
+          <span class="material-icons-round" *ngIf="deleting">
+            delete_outline
+          </span>
+        </div>
         <div class="handle" cdkDragHandle>
           <span class="material-icons-round">
             drag_indicator
           </span>
         </div>
       </div>
+      <div class="trash">
+        <span class="material-icons-round">
+          delete_outline
+        </span>
+      </div>
       <ng-container *ngFor="let item of casoClinico.fluxo">
         <ng-container *ngIf="item.dialogo">
-          <div class="card" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" [matMenuTriggerFor]="menu" (click)="onCardClick($event)" (contextmenu)="openMenu($event, item.idFluxo)" (cdkDragMoved)="onDrag($event)" cdkDragHandle>
+          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" cdkDragHandle>
             <span class="entrada" (click)="drawLineTo(item.idFluxo)"></span>
             <img src="assets/icones_medtest/4.svg" alt="" srcset="">
             <span class="saida" (click)="drawLineFrom(item.idFluxo)"></span>
-
           </div>
         </ng-container>
         <ng-container *ngIf="item.exame">
-          <div class="card" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" [matMenuTriggerFor]="menu" (click)="onCardClick($event)" (contextmenu)="openMenu($event, item.idFluxo)" (cdkDragMoved)="onDrag($event)" cdkDragHandle>
+          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" cdkDragHandle>
             <span class="entrada" (click)="drawLineTo(item.idFluxo)"></span>
             <img src="assets/icones_medtest/3.svg" alt="" srcset="">
             <span class="saida" (click)="drawLineFrom(item.idFluxo)"></span>
           </div>
         </ng-container>
         <ng-container *ngIf="item.questao">
-          <div class="card" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" [matMenuTriggerFor]="menu" (click)="onCardClick($event)" (contextmenu)="openMenu($event, item.idFluxo)" (cdkDragMoved)="onDrag($event)" cdkDragHandle>
+          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" cdkDragHandle>
             <span class="entrada" (click)="drawLineTo(item.idFluxo)"></span>
             <img src="assets/icones_medtest/5.svg" alt="" srcset="">
             <span class="saida resposta" (click)="drawLineFrom(item.idFluxo, 2)"></span>
@@ -47,7 +58,7 @@
           </div>
         </ng-container>
         <ng-container *ngIf="item.transicao?.tipo == 'S'">
-          <div class="card" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" [matMenuTriggerFor]="menu" (click)="onCardClick($event)" (contextmenu)="openMenu($event, item.idFluxo)" (cdkDragMoved)="onDrag($event)" cdkDragHandle>
+          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" cdkDragHandle>
             <img src="assets/icones_medtest/1.svg" alt="" srcset="">
             <span class="saida" (click)="drawLineFrom(item.idFluxo)"></span>
           </div>
@@ -56,10 +67,3 @@
     </div>
   </div>
 </div>
-
-<mat-menu #menu>
-  <div class="menu" cdkMenu>
-    <button class="menu-item" mat-menu-item>Save</button>
-    <button class="menu-item" mat-menu-item>Exit</button>
-  </div>
-</mat-menu>

@@ -4,6 +4,7 @@
   background-size: 3%;
   width: 100vw;
   height: calc(100vh - 80px);
+  overflow: hidden;
 }
 
 .bg-dots {
@@ -11,6 +12,7 @@
   width: 100%;
   height: 100%;
   display: flex;
+  overflow: hidden;
 }
 
 .my-bg {
@@ -94,7 +96,7 @@ svg {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   z-index: 10;
   border-radius: 12px;
-  color: #fff;
+  color: #000;
   overflow: hidden;
   .toolbar-item {
     height: 100%;
@@ -109,6 +111,14 @@ svg {
     img {
       width: 24px;
     }
+    span {
+      font-size: 26px;
+    }
+    &.active {
+      background-color: #f7f7f7;
+      box-shadow: inset -2px -2px 4px rgba(255, 255, 255, 0.45),
+        inset 2px 2px 4px rgba(161, 168, 180, 0.3);
+    }
   }
   .handle {
     color: #ccc;
@@ -119,5 +129,21 @@ svg {
     align-items: center;
     justify-content: center;
     border-left: 1px solid #ccc;
+  }
+}
+
+.deleting {
+  .card:has(.entrada),
+  path {
+    cursor: url("/assets/trash.png"), auto;
+    span {
+      cursor: url("/assets/trash.png"), auto;
+    }
+  }
+  .card:not(:has(.entrada)) {
+    cursor: no-drop;
+    span {
+      cursor: no-drop;
+    }
   }
 }

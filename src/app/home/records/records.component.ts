@@ -1,19 +1,16 @@
-import { CasoClinico, Questao } from './estrutura';
 import { Component, OnInit } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
 @Component({
   selector: 'app-records',
   templateUrl: './records.component.html',
   styleUrls: ['./records.component.scss'],
 })
 export class RecordsComponent implements OnInit {
-  @ViewChild(MatMenuTrigger) trigger!: MatMenuTrigger;
-
   cursorPosition = {
     x: 0,
     y: 0,
   };
+
+  deleting: boolean = false;
 
   drawing: boolean = false;
 
@@ -151,10 +148,16 @@ export class RecordsComponent implements OnInit {
         document.querySelector('path:not([to])')?.remove();
         this.drawing = false;
       }
+      if (this.deleting) {
+        event.preventDefault();
+        this.deleting = false;
+      }
     });
   }
 
   insertFluxo(type: string) {
+    this.drawing = false;
+    this.deleting = false;
     switch (type) {
       case 'dialogo':
         this.insertDialogo();
@@ -169,11 +172,46 @@ export class RecordsComponent implements OnInit {
         this.insertTransicao();
         break;
     }
+    setTimeout(() => {
+      this.moveCardUntilNotOverlapping(this.casoClinico.fluxo.length - 1);
+    }, 100);
+  }
+
+  moveCardUntilNotOverlapping(cardId: any) {
+    let card = document.getElementById('card' + cardId)!;
+    console.log(card);
+    let rect = card.getBoundingClientRect();
+    let overlapping = true;
+    let translateX = 0;
+    let translateY = 0;
+    while (overlapping) {
+      overlapping = false;
+      this.boardEventContainer
+        .querySelectorAll('.card:not([id="card' + cardId + '"])')
+        .forEach((otherCard: any) => {
+          let otherRect = otherCard.getBoundingClientRect();
+          console.log(otherRect);
+          console.log(rect);
+          console.log(otherCard);
+          if (
+            rect.x < otherRect.x + otherRect.width &&
+            rect.x + rect.width > otherRect.x &&
+            rect.y < otherRect.y + otherRect.height &&
+            rect.y + rect.height > otherRect.y
+          ) {
+            overlapping = true;
+            translateX += 40;
+            translateY += 40;
+            card.style.transform = `translate(${translateX}px, ${translateY}px)`;
+            rect = card.getBoundingClientRect();
+          }
+        });
+    }
   }
 
   insertDialogo() {
     this.casoClinico.fluxo.push({
-      idFluxo: this.casoClinico.fluxo.length + 1,
+      idFluxo: this.casoClinico.fluxo.length,
       dialogo: {
         conversa: [
           {
@@ -192,7 +230,7 @@ export class RecordsComponent implements OnInit {
 
   insertQuestao() {
     this.casoClinico.fluxo.push({
-      idFluxo: this.casoClinico.fluxo.length + 1,
+      idFluxo: this.casoClinico.fluxo.length,
       questao: {
         pergunta: 'Qual a cor do céu?',
         respostas: [
@@ -215,7 +253,7 @@ export class RecordsComponent implements OnInit {
 
   insertExame() {
     this.casoClinico.fluxo.push({
-      idFluxo: this.casoClinico.fluxo.length + 1,
+      idFluxo: this.casoClinico.fluxo.length,
       exame: {
         informacaoTexto: [
           {
@@ -230,7 +268,7 @@ export class RecordsComponent implements OnInit {
 
   insertTransicao() {
     this.casoClinico.fluxo.push({
-      idFluxo: this.casoClinico.fluxo.length + 1,
+      idFluxo: this.casoClinico.fluxo.length,
       transicao: {
         tipo: 'M',
       },
@@ -279,6 +317,9 @@ export class RecordsComponent implements OnInit {
   }
 
   drawLineFrom(id: any, idSaida?: any) {
+    if (this.deleting) {
+      return;
+    }
     let pathFrom;
     if (!idSaida) {
       pathFrom = document.querySelector(`[from="${id}"]`);
@@ -350,7 +391,6 @@ export class RecordsComponent implements OnInit {
   }
 
   drawLine(id: any, idSaida?: any) {
-    console.log('drawLine', id, idSaida);
     if (this.lineDrawer.originId == id) {
       let path = idSaida
         ? document.querySelector(
@@ -380,23 +420,6 @@ export class RecordsComponent implements OnInit {
 
   menuPosition = { x: 0, y: 0 };
 
-  onCardClick($event: MouseEvent) {
-    $event.preventDefault();
-    $event.stopPropagation();
-  }
-
-  openMenu($event: MouseEvent, id: any) {
-    $event.preventDefault();
-    $event.stopPropagation();
-
-    this.menuPosition = {
-      x: $event.clientX,
-      y: $event.clientY,
-    };
-
-    this.trigger.openMenu();
-  }
-
   salvarCasoClinico() {
     let paths = document.querySelectorAll('path[from][to]');
     paths.forEach((path) => {
@@ -419,5 +442,31 @@ export class RecordsComponent implements OnInit {
       }
     });
     console.log(this.casoClinico);
+  }
+
+  deleteToggle() {
+    this.deleting = !this.deleting;
+  }
+
+  handleClick(event: any, item: any) {
+    if (this.deleting) {
+      if (!(item.transicao?.tipo == 'S')) this.deleteItem(item.idFluxo);
+    }
+  }
+
+  deleteItem(itemId: number) {
+    let pathsFrom = document.querySelectorAll(`path[from="${itemId}"]`);
+    let pathsTo = document.querySelectorAll(`path[to="${itemId}"]`);
+    pathsTo.forEach((path) => {
+      path.remove();
+    });
+    pathsFrom.forEach((path) => {
+      path.remove();
+    });
+    let fluxo = this.casoClinico.fluxo.find((f: any) => f.idFluxo == itemId);
+    let index = this.casoClinico.fluxo.indexOf(fluxo);
+    if (index > -1) {
+      this.casoClinico.fluxo.splice(index, 1);
+    }
   }
 }

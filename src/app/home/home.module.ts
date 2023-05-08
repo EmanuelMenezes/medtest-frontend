@@ -1,13 +1,13 @@
+import { CdkMenuModule } from '@angular/cdk/menu';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { NgApexchartsModule } from 'ng-apexcharts';
-import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LandingComponent } from './landing/landing.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { GameComponent } from './game/game.component';
 import { RecordsComponent } from './records/records.component';
-import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
 @NgModule({
   declarations: [
     LandingComponent,
@@ -37,9 +37,8 @@ import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-m
         ],
       },
     ]),
-    NgApexchartsModule,
     DragDropModule,
-    MatMenuModule,
+    CdkMenuModule,
   ],
 })
 export class HomeModule {}
