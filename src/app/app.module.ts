@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
@@ -14,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     NgApexchartsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

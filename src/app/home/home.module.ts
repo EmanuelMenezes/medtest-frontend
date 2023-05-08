@@ -1,3 +1,4 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -6,7 +7,7 @@ import { LandingComponent } from './landing/landing.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { GameComponent } from './game/game.component';
 import { RecordsComponent } from './records/records.component';
-
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
   declarations: [
     LandingComponent,
@@ -37,6 +38,8 @@ import { RecordsComponent } from './records/records.component';
       },
     ]),
     NgApexchartsModule,
+    DragDropModule,
+    MatMenuModule,
   ],
 })
 export class HomeModule {}

@@ -1,0 +1,123 @@
+.wrapper {
+  background-image: url("../../../assets/Design\ sem\ nome.png");
+  background-repeat: repeat;
+  background-size: 3%;
+  width: 100vw;
+  height: calc(100vh - 80px);
+}
+
+.bg-dots {
+  background-color: #ffffffcc;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.my-bg {
+  background-color: #ccc;
+}
+
+.card {
+  position: absolute;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  width: 60px;
+  height: 60px;
+  background-color: transparent;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border: 4px solid #000;
+  padding: 20px;
+  img {
+    width: 24px;
+  }
+  .entrada {
+    position: absolute;
+    left: -20px;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    border: 2px solid #6000aa;
+  }
+  .saida {
+    position: absolute;
+    right: -20px;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    border: 2px solid #6000aa;
+  }
+  span {
+    cursor: pointer;
+  }
+  .resposta {
+    top: -10px;
+  }
+  .resposta:nth-of-type(2) {
+    top: 10px;
+  }
+  .resposta:nth-of-type(3) {
+    top: 30px;
+  }
+  .resposta:nth-of-type(4) {
+    top: 50px;
+  }
+}
+
+path {
+  stroke-width: 5;
+  stroke: #6000aa;
+  stroke-linecap: round;
+  fill: none;
+  z-index: 10;
+}
+
+svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.toolbar {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  border-radius: 12px;
+  color: #fff;
+  overflow: hidden;
+  .toolbar-item {
+    height: 100%;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    &:hover {
+      background-color: #eee;
+    }
+    img {
+      width: 24px;
+    }
+  }
+  .handle {
+    color: #ccc;
+    cursor: move;
+    height: 100%;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid #ccc;
+  }
+}
