@@ -1,0 +1,159 @@
+.title {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .dialog-title {
+    display: flex;
+    align-items: center;
+    .text {
+      font-size: 20px;
+      font-weight: 500;
+      color: #000;
+      margin-left: 10px;
+    }
+    img {
+      height: 30px;
+      resize: both;
+    }
+  }
+}
+
+.dialog-content {
+  height: 100%;
+  width: 100%;
+}
+
+.content-wrapper {
+  border-top: 1px solid #e7e7e7;
+  margin: 14px 0;
+  max-height: calc(80vh - 170px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+::ng-deep.mat-mdc-dialog-surface {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  .btn-close {
+    cursor: pointer;
+    color: #000;
+    font-size: 16px;
+  }
+}
+
+.btn-save {
+  background-color: #07cc00;
+  color: #fff;
+
+  &:hover {
+    background-color: #963add;
+    opacity: 0.8;
+  }
+}
+.btn-cancel {
+  background-color: transparent;
+  color: #777;
+  border: 2px solid #777;
+  &:hover {
+    color: #dd523a;
+    border: 2px solid #dd523a;
+  }
+}
+
+.btn {
+  border-radius: 25px;
+  padding: 10px 30px;
+  height: 50px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-add {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  .material-icons-round {
+    color: #07cc00;
+  }
+}
+
+*:focus {
+  outline: none;
+  box-shadow: none !important;
+  border-color: inherit !important;
+}
+
+.pergunta {
+  .form-control {
+    height: 36px;
+    border-radius: 18px;
+  }
+  margin-bottom: 15px;
+}
+
+.input-group {
+  display: flex;
+  margin: 8px 0;
+  width: 100%;
+  padding: 0 10px;
+  .texto {
+    width: 70%;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    .form-control {
+      height: 36px;
+      border-radius: 18px 0px 0px 18px;
+    }
+  }
+  .pontuacao {
+    width: 15%;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    .form-control {
+      display: flex;
+      flex-shrink: 1;
+      height: 36px;
+      border-radius: 0px 18px 18px 0px;
+    }
+  }
+  .is-correct {
+    width: 80px;
+    margin-left: 10px !important;
+    border-radius: 18px !important;
+    height: 36px;
+    mat-button-toggle {
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        font-size: 20px;
+      }
+      &.mat-button-toggle-checked {
+        background-color: #f7f7f7;
+        box-shadow: inset 2px -2px 4px rgba(255, 255, 255, 0.45),
+          inset -2px 2px 4px rgba(161, 168, 180, 0.3);
+        span {
+          color: #07cc00;
+        }
+        &:nth-of-type(2) {
+          box-shadow: inset -2px -2px 4px rgba(255, 255, 255, 0.45),
+            inset 2px 2px 4px rgba(161, 168, 180, 0.3);
+          span {
+            color: #dd523a;
+          }
+        }
+      }
+    }
+  }
+}
+
+::ng-deep .mat-button-toggle-label-content {
+  padding: 0 !important;
+}

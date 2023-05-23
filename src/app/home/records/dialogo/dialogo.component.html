@@ -1,0 +1,49 @@
+<div class="px-2 py-1 dialog">
+  <div class="title">
+    <span class="dialog-title">
+      <img src="assets/icones_medtest/4.svg" alt="" srcset="">
+      <span class="text">Diálogo</span>
+    </span>
+    <span class="btn-close" (click)="closeDialog()">
+    </span>
+  </div>
+  <div class="content-wrapper mat-typography p-2">
+    <div class="dialog-content">
+      <div class="d-flex flex-column" [formGroup]="form" cdkDropList (cdkDropListDropped)="drop($event)">
+        <div class="row align-items-start">
+          <span class="btn-add" (click)="addDialogo()">
+            <span class="material-icons-round me-1">add_circle</span>
+            <span class="text">Adicionar</span>
+          </span>
+        </div>
+
+        <ng-container formArrayName="conversa">
+          <ng-container *ngFor="let cForm of conversaForm.controls; let index = index">
+            <div [formGroupName]="index" class="input-group" cdkDrag>
+              <mat-select class="form-control select" formControlName="personagem">
+                <mat-option value="M">Médico</mat-option>
+                <mat-option value="P">Paciente</mat-option>
+              </mat-select>
+              <div class="input">
+                <input class="form-control" formControlName="mensagem" placeholder="Texto">
+                <div class="handle" cdkDragHandle>
+                  <span class="material-icons-round">
+                    drag_indicator
+                  </span>
+                </div>
+                <span *ngIf="conversaForm.controls.length > 1" class="material-icons-round" (click)="removeDialogo(index)">delete</span>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="actions" align="end">
+    <button class="btn btn-cancel me-2" (click)="closeDialog()">Cancelar</button>
+    <button class="btn btn-save" [disabled]="!form.valid" (click)="saveDialogo()">Salvar</button>
+  </div>
+
+</div>

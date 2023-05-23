@@ -21,5 +21,23 @@ body {
   background-color: transparent;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+* {
+  font-family: "Ubuntu", sans-serif;
+  ::before {
+    display: inline !important;
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.dialog-container {
+  background: rgba(255, 255, 255, 0.69) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  padding: 20px;
+}

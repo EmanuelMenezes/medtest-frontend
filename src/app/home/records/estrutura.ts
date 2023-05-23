@@ -34,6 +34,7 @@ export interface Resposta {
 
 export interface Transicao {
   tipo: string; // G - Game Over, V - Vitoria, M - Melhora, P - Piora, S - Start
+  proxFluxo: number;
 }
 
 export interface CasoClinico {

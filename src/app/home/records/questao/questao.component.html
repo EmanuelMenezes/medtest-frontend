@@ -1,0 +1,76 @@
+<div class="px-2 py-1 dialog">
+  <div class="title">
+    <span class="dialog-title">
+      <img src="assets/icones_medtest/5.svg" alt="" srcset="">
+      <span class="text">Questão</span>
+    </span>
+    <span class="btn-close" (click)="closeDialog()">
+    </span>
+  </div>
+  <div class="content-wrapper mat-typography p-2">
+    <div class="dialog-content">
+      <div class="d-flex flex-column" [formGroup]="form">
+        <div class="pergunta">
+          <input class="form-control" formControlName="pergunta" placeholder="Pergunta">
+        </div>
+        <ng-container formArrayName="respostas">
+          <div formGroupName="0" class="input-group">
+            <div class="texto">
+              <input class="form-control" formControlName="texto" placeholder="Texto">
+            </div>
+            <div class="pontuacao">
+              <input type="number" class="form-control" formControlName="pontuacao" placeholder="Pts">
+            </div>
+            <mat-button-toggle-group formControlName="isCorrect" class="is-correct" aria-label="Is correct?">
+              <mat-button-toggle [value]="true"><span class="material-icons-round">check</span></mat-button-toggle>
+              <mat-button-toggle [value]="false"><span class="material-icons-round">clear</span></mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+          <div formGroupName="1" class="input-group">
+            <div class="texto">
+              <input class="form-control" formControlName="texto" placeholder="Texto">
+            </div>
+            <div class="pontuacao">
+              <input type="number" class="form-control" formControlName="pontuacao" placeholder="Pts">
+            </div>
+            <mat-button-toggle-group formControlName="isCorrect" class="is-correct" aria-label="Is correct?">
+              <mat-button-toggle [value]="true"><span class="material-icons-round">check</span></mat-button-toggle>
+              <mat-button-toggle [value]="false"><span class="material-icons-round">clear</span></mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+          <div formGroupName="2" class="input-group">
+            <div class="texto">
+              <input class="form-control" formControlName="texto" placeholder="Texto">
+            </div>
+            <div class="pontuacao">
+              <input type="number" class="form-control" formControlName="pontuacao" placeholder="Pts">
+            </div>
+            <mat-button-toggle-group formControlName="isCorrect" class="is-correct" aria-label="Is correct?">
+              <mat-button-toggle [value]="true"><span class="material-icons-round">check</span></mat-button-toggle>
+              <mat-button-toggle [value]="false"><span class="material-icons-round">clear</span></mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+          <div formGroupName="3" class="input-group">
+            <div class="texto">
+              <input class="form-control" formControlName="texto" placeholder="Texto">
+            </div>
+            <div class="pontuacao">
+              <input type="number" class="form-control" formControlName="pontuacao" placeholder="Pts">
+            </div>
+            <mat-button-toggle-group formControlName="isCorrect" class="is-correct" aria-label="Is correct?">
+              <mat-button-toggle [value]="true"><span class="material-icons-round">check</span></mat-button-toggle>
+              <mat-button-toggle [value]="false"><span class="material-icons-round">clear</span></mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="actions" align="end">
+    <button class="btn btn-cancel me-2" (click)="closeDialog()">Cancelar</button>
+    <button class="btn btn-save" [disabled]="!form.valid" (click)="saveQuestao()">Salvar</button>
+  </div>
+
+</div>
