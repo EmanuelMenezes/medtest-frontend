@@ -1,17 +1,90 @@
 <div class="my-bg">
   <div class="wrapper board">
-    <div class="bg-dots" id="board" [class.deleting]="deleting">
-      <svg>
+    <div class="sidebar active" id="sidebar">
+      <div class="sb-content">
+        <div class="section">
+          <div class="section-title">
+            <span class="highlight"></span>
+            <span class="text">Caso Clínico</span>
+            <span class="highlight"></span>
+          </div>
+          <mat-form-field class="field">
+            <mat-label>Nome</mat-label>
+            <input matInput [(ngModel)]="casoClinico.nome" maxlength="50">
+          </mat-form-field>
+          <mat-form-field class="field">
+            <mat-label>Descrição</mat-label>
+            <textarea rows="5" matInput [(ngModel)]="casoClinico.descricao">
+            </textarea>
+          </mat-form-field>
+        </div>
+        <div class="section">
+          <div class="section-title">
+            <span class="highlight"></span>
+            <span class="text">Detalhes do Paciente</span>
+            <span class="highlight"></span>
+          </div>
+          <div class="patient">
+            <div class="thumb">
+              <img src="assets/thumb-ex.png" alt="" srcset="">
+            </div>
+            <mat-form-field class="name">
+              <mat-label>Nome</mat-label>
+              <input matInput [(ngModel)]="casoClinico.paciente.nome" maxlength="30">
+            </mat-form-field>
+          </div>
+          <mat-form-field class="field">
+            <mat-label>Descrição</mat-label>
+            <textarea rows="5" matInput [(ngModel)]="casoClinico.paciente.descricao">
+            </textarea>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div class="sb-toggle">
+
+        <div class="toggle-area" (click)="sidebarToggle()">
+          <span class="material-icons-round right">
+            keyboard_arrow_right
+          </span>
+          <span class="material-icons-round left">
+            keyboard_arrow_left
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="bg-dots" id="board" [class.deleting]="deleting" (mouseleave)="onMouseLeaving()" (click)="boardClick()">
+      <svg id="path-base">
       </svg>
-      <div class="toolbar" cdkDrag #toolbar cdkDragBoundary=".bg-dots">
-        <div class="toolbar-item" (click)="insertFluxo('dialogo')">
+      <div class="toolbar" cdkDrag #toolbar cdkDragBoundary=".bg-dots" (click)="toolbarClick()">
+        <div class="toolbar-item" (click)="insertDialogo()">
           <img src="assets/icones_medtest/4.svg" alt="" srcset="">
         </div>
-        <div class="toolbar-item" (click)="insertFluxo('exame')">
+        <div class="toolbar-item" (click)="insertExame()">
           <img src="assets/icones_medtest/3.svg" alt="" srcset="">
         </div>
-        <div class="toolbar-item" (click)="insertFluxo('questao')">
+        <div class="toolbar-item" (click)="insertQuestao()">
           <img src="assets/icones_medtest/5.svg" alt="" srcset="" style="margin-top: -3px;">
+        </div>
+        <div class="toolbar-item" (click)="insertTransicao('V')">
+          <span class="material-icons-round">
+            emoji_events
+          </span>
+        </div>
+        <div class="toolbar-item" (click)="insertTransicao('G')">
+          <span class="material-icons-round">
+            disabled_by_default
+          </span>
+        </div>
+        <div class="toolbar-item" (click)="insertTransicao('M')">
+          <span class="material-icons-round">
+            thumb_up
+          </span>
+        </div>
+        <div class="toolbar-item" (click)="insertTransicao('P')">
+          <span class="material-icons-round">
+            thumb_down
+          </span>
         </div>
         <div class="toolbar-item" (click)="deleteToggle()" [class.active]="deleting">
           <span class="material-icons-round" *ngIf="!deleting">
@@ -21,46 +94,88 @@
             delete_outline
           </span>
         </div>
+        <div class="toolbar-item" (click)="dragToggle()" [class.active]="dragging">
+          <span class="material-icons-round" *ngIf="!dragging">
+            select_all
+          </span>
+          <span class="material-icons-round" *ngIf="dragging">
+            deselect
+          </span>
+        </div>
+        <div class="toolbar-item" (click)="salvarCasoClinico()">
+          <span class="material-icons-round">
+            save
+          </span>
+        </div>
         <div class="handle" cdkDragHandle>
           <span class="material-icons-round">
             drag_indicator
           </span>
         </div>
       </div>
-      <div class="trash">
-        <span class="material-icons-round">
-          delete_outline
-        </span>
-      </div>
       <ng-container *ngFor="let item of casoClinico.fluxo">
         <ng-container *ngIf="item.dialogo">
-          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" cdkDragHandle>
-            <span class="entrada" (click)="drawLineTo(item.idFluxo)"></span>
+          <div class="card" (dblclick)="editDialogo(item.idFluxo)" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" (cdkDragEnded)="afterDrag($event)" cdkDragHandle>
+            <span class="entrada" [class.active]="setActiveEntrada(item.idFluxo)" (click)="drawLineTo(item.idFluxo)"></span>
             <img src="assets/icones_medtest/4.svg" alt="" srcset="">
-            <span class="saida" (click)="drawLineFrom(item.idFluxo)"></span>
+            <span [class.active]="setActiveSaida(item.idFluxo)" class="saida" (click)="drawLineFrom(item.idFluxo)"></span>
           </div>
         </ng-container>
         <ng-container *ngIf="item.exame">
-          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" cdkDragHandle>
-            <span class="entrada" (click)="drawLineTo(item.idFluxo)"></span>
+          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" (cdkDragEnded)="afterDrag($event)" cdkDragHandle>
+            <span class="entrada" [class.active]="setActiveEntrada(item.idFluxo)" (click)="drawLineTo(item.idFluxo)"></span>
             <img src="assets/icones_medtest/3.svg" alt="" srcset="">
-            <span class="saida" (click)="drawLineFrom(item.idFluxo)"></span>
+            <span [class.active]="setActiveSaida(item.idFluxo)" class="saida" (click)="drawLineFrom(item.idFluxo)"></span>
           </div>
         </ng-container>
         <ng-container *ngIf="item.questao">
-          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" cdkDragHandle>
-            <span class="entrada" (click)="drawLineTo(item.idFluxo)"></span>
+          <div class="card" (dblclick)="editQuestao(item.idFluxo)" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" (cdkDragEnded)="afterDrag($event)" cdkDragHandle>
+            <span class="entrada" [class.active]="setActiveEntrada(item.idFluxo)" (click)="drawLineTo(item.idFluxo)"></span>
             <img src="assets/icones_medtest/5.svg" alt="" srcset="">
-            <span class="saida resposta" (click)="drawLineFrom(item.idFluxo, 2)"></span>
-            <span class="saida resposta" (click)="drawLineFrom(item.idFluxo, 3)"></span>
-            <span class="saida resposta" (click)="drawLineFrom(item.idFluxo, 4)"></span>
-            <span class="saida resposta" (click)="drawLineFrom(item.idFluxo, 1)"></span>
+            <span [class.active]="setActiveSaida(item.idFluxo, 2)" [class.correct]="checkCorrectAnswer(item.idFluxo, 2)" class="saida resposta" (click)="drawLineFrom(item.idFluxo, 2)"></span>
+            <span [class.active]="setActiveSaida(item.idFluxo, 3)" [class.correct]="checkCorrectAnswer(item.idFluxo, 3)" class="saida resposta" (click)="drawLineFrom(item.idFluxo, 3)"></span>
+            <span [class.active]="setActiveSaida(item.idFluxo, 4)" [class.correct]="checkCorrectAnswer(item.idFluxo, 4)" class="saida resposta" (click)="drawLineFrom(item.idFluxo, 4)"></span>
+            <span [class.active]="setActiveSaida(item.idFluxo, 1)" [class.correct]="checkCorrectAnswer(item.idFluxo, 1)" class="saida resposta" (click)="drawLineFrom(item.idFluxo, 1)"></span>
           </div>
         </ng-container>
         <ng-container *ngIf="item.transicao?.tipo == 'S'">
-          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" cdkDragHandle>
+          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" (cdkDragEnded)="afterDrag($event)" cdkDragHandle>
             <img src="assets/icones_medtest/1.svg" alt="" srcset="">
-            <span class="saida" (click)="drawLineFrom(item.idFluxo)"></span>
+            <span [class.active]="setActiveSaida(item.idFluxo)" class="saida" (click)="drawLineFrom(item.idFluxo)"></span>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="item.transicao?.tipo == 'M'">
+          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" (cdkDragEnded)="afterDrag($event)" cdkDragHandle>
+            <span class="entrada" [class.active]="setActiveEntrada(item.idFluxo)" (click)="drawLineTo(item.idFluxo)"></span>
+            <span class="material-icons-round">
+              thumb_up
+            </span>
+            <span [class.active]="setActiveSaida(item.idFluxo)" class="saida" (click)="drawLineFrom(item.idFluxo)"></span>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="item.transicao?.tipo == 'P'">
+          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" (cdkDragEnded)="afterDrag($event)" cdkDragHandle>
+            <span class="entrada" [class.active]="setActiveEntrada(item.idFluxo)" (click)="drawLineTo(item.idFluxo)"></span>
+            <span class="material-icons-round">
+              thumb_down
+            </span>
+            <span [class.active]="setActiveSaida(item.idFluxo)" class="saida" (click)="drawLineFrom(item.idFluxo)"></span>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="item.transicao?.tipo == 'G'">
+          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" (cdkDragEnded)="afterDrag($event)" cdkDragHandle>
+            <span class="entrada" [class.active]="setActiveEntrada(item.idFluxo)" (click)="drawLineTo(item.idFluxo)"></span>
+            <span class="material-icons-round">
+              disabled_by_default
+            </span>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="item.transicao?.tipo == 'V'">
+          <div class="card" (click)="handleClick($event, item)" cdkDrag [cdkDragData]="item" [cdkDragDisabled]="drawing || deleting" [id]="'card'+item.idFluxo" cdkDragBoundary=".bg-dots" (cdkDragMoved)="onDrag($event)" (cdkDragEnded)="afterDrag($event)" cdkDragHandle>
+            <span class="entrada" [class.active]="setActiveEntrada(item.idFluxo)" (click)="drawLineTo(item.idFluxo)"></span>
+            <span class="material-icons-round">
+              emoji_events
+            </span>
           </div>
         </ng-container>
       </ng-container>
