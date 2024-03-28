@@ -617,6 +617,8 @@ export class RecordsComponent {
         fluxo.questao.respostas[+saida - 1].proxFluxo = to;
       } else {
         if (fluxo.exame) {
+          let input = document.querySelector('#fileInput') as HTMLInputElement;
+          fluxo.exame.picture_src = input.files![0]
           fluxo.exame.proxFluxo = to;
         }
         if (fluxo.transicao) {
@@ -630,6 +632,7 @@ export class RecordsComponent {
 
     this.formCase.patchValue({ caso: this.casoClinico });
     this.saveCardsPosition();
+
     localStorage.setItem('casoClinico', JSON.stringify(this.casoClinico));
     this.http.post('http://3.82.61.131:5000/dados/casoClinico', this.casoClinico).subscribe(
       (response) => {
