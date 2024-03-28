@@ -5,6 +5,7 @@ import { DialogoComponent } from './dialogo/dialogo.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { QuestaoComponent } from './questao/questao.component';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-records',
   templateUrl: './records.component.html',
@@ -67,7 +68,7 @@ export class RecordsComponent {
 
   cardsPosition: any = {};
 
-  constructor(public dialog: MatDialog, private fb: FormBuilder) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder, private http: HttpClient) {
     this.formCase = this.fb.group({
       caso: [this.casoClinico],
     });
@@ -630,6 +631,15 @@ export class RecordsComponent {
     this.formCase.patchValue({ caso: this.casoClinico });
     this.saveCardsPosition();
     localStorage.setItem('casoClinico', JSON.stringify(this.casoClinico));
+    this.http.post('http://3.82.61.131:5000/dados/casoClinico', this.casoClinico).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
   }
 
   deleteToggle() {
